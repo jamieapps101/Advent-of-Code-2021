@@ -10,7 +10,7 @@ def import_instructions(file_path: str):
     with open(file_path) as fp:
         for line in fp:
             # This reads in each line in the file
-            # and puts it onto the end of the 
+            # and puts it onto the end of the
             # instructions list
             # instructions.append(line)
             if line == "":
@@ -28,13 +28,15 @@ def import_instructions(file_path: str):
 def act_on_instructions(instructions: List[dict]):
     horizontal_position = 0
     depth = 0
+    aim = 0
     for instruction in instructions:
         if instruction["keyword"] == "forward":
             horizontal_position += instruction["value"]
+            depth += aim * instruction["value"]
         elif instruction["keyword"] == "up":
-            depth -= instruction["value"]
+            aim -= instruction["value"]
         elif instruction["keyword"] == "down":
-            depth += instruction["value"]
+            aim += instruction["value"]
         else:
             print("ERRRRRRRRRRRor")
             raise Exception
@@ -42,10 +44,9 @@ def act_on_instructions(instructions: List[dict]):
     print(f"final_position: {final_position}")
 
 
-
 def main():
-    instructions = import_instructions(FILE_PATH)   
-    act_on_instructions(instructions) 
+    instructions = import_instructions(FILE_PATH)
+    act_on_instructions(instructions)
 
 
 
