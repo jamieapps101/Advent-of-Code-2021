@@ -7,9 +7,15 @@ def import_diagnostic_report(file_path: str):
             input_data.append(line[:-1])
     return input_data
 
+def scan_data(input_data):
+    gamma_rate = 0
+    epsilon_rate = 0
+
+
 def main():
     input_data = import_diagnostic_report(FILE_PATH)
     print(input_data)
+
 
 if __name__=="__main__":
     main()
