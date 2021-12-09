@@ -13,6 +13,9 @@ def get_input_data(path: str):
     return input_data
 
 
+for line_index in len(input_data):
+    pass
+
 def get_deltas(input_data):
     deltas = []
     increase_counter = 0
