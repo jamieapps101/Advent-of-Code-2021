@@ -12,28 +12,60 @@ def import_diagnostic_report(file_path: str):
             input_data.append(line[:-1])
     return input_data
 
-def binary_string_to_int(input_str):
+def binary_string_to_int(input_str: str):
     '''Takes a string '''
     int_value = 0
     for bit in input_str:
-        int_value *= 2
+        int_value *= 2 # -> int_value = int_value*2
         if bit == "1":
             int_value += 1
     return int_value
 
-def scan_data(input_data):
+# input_str = "0110"
+#
+# iteration counter | bit | int_value
+# -1                | X   | 0
+#  0                | "0" | 0
+#  1                | "1" | 1
+#  2                | "1" | 3
+#  3                | "0" | 6
+
+def scan_data(input_data: List[str]):
     gamma_rate   = ""
     epsilon_rate = ""
     number_of_columns = len(input_data[0])
+
+    # 12 -> [0 1 2 3 4 5 6 7 8 9 10 11]
+    # column_index = 0
+    # column_index = 1
+    # column_index = 2
+    # column_index = 3
+    # column_index = 4
+    # column_index = 5
+    # column_index = 6
+    # column_index = 7
+    # ...
+
+    # for each column index
     for column_index in range(number_of_columns):
-        column = [row[column_index] for row in input_data]
+        # visits each string in input_data, and gets the character
+        # at the index of column_index
+        column = []
+        for row in input_data:
+            x = row[column_index]
+            column.append(x)
+        # count number of 1s and 0s in string
         ones = column.count("1")
         zeroes = column.count("0")
+        # Build up string representation of binary number for each column
         gamma_rate   += "1" if ones>zeroes else "0"
         epsilon_rate += "1" if ones<zeroes else "0"
+    # once we've built up the binary strings, convert them into actual
+    # integer numbers
     gamma_rate_value   = binary_string_to_int(gamma_rate)
     epsilon_rate_value = binary_string_to_int(epsilon_rate)
 
+    # Follow the guidance for finding the power consumption
     power_consumption = gamma_rate_value*epsilon_rate_value
     print(f"power_consumption: {power_consumption}")
 
