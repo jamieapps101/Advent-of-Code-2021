@@ -1,4 +1,5 @@
 from typing import List
+from enum import Enum
 
 FILE_PATH = "./day_3/data/input.txt"
 
@@ -37,9 +38,7 @@ def scan_data(input_data):
     print(f"power_consumption: {power_consumption}")
 
 def build_branch(row: str, local_tree: dict, depth: int):
-    # depth is in relation to the character counter
     if depth == len(row):
-        # returns the value at the end of the branch
         return row
     else:
         bit = row[depth]
@@ -47,12 +46,9 @@ def build_branch(row: str, local_tree: dict, depth: int):
             local_tree[bit] = {}
             local_tree[bit+"_count"] = 0
         else:
-            # dont need to add it
             local_tree[bit+"_count"] += 1
 
         local_tree[bit] = build_branch(row,local_tree[bit],depth+1)
-        # return the modified local tree to be reflected by this
-        # function's caller
         return local_tree
 
 def build_tree(diagnostic_report_data: List[str]):
@@ -62,17 +58,17 @@ def build_tree(diagnostic_report_data: List[str]):
     for row in diagnostic_report_data:
         # row = "010111011001"
         depth = 0
-        # build_branch builds a branch into the global_tree by passing the current
-        # value of global_tree into the local tree argument of build branch
-        # build_branch then modifies the local_tree variable, and returns its
-        # new value to be reassigned to the global_tree variable.
         global_tree = build_branch(row,global_tree,depth)
     return global_tree
 
+class TreeQueryMode(Enum):
+    LEAST_COMMON=0
+    MOST_COMMON =1
 
-def query_tree(tree):
-    '''For Liv!'''
-    pass
+def query_tree(tree, mode: TreeQueryMode):
+    if mode == TreeQueryMode.MOST_COMMON:
+        filter_bit = "1" if tree["1_count"] > tree["0_count"] else "0"
+
 
 
 def main():
@@ -81,46 +77,5 @@ def main():
 
 if __name__=="__main__":
     main()
-
-
-#      * 00
-#     /
-# 0x * \
-#   /   * 01
-# *
-#   \ /* 10
-# 1x *
-#     \
-#      * 11
-
-
-node["0"]["0"] -> "00"
-
-
-
-node["0"] -> {
-    "0": "00",
-    "0_count": 1,
-    "1": "01",
-    "1_count": 1,
-}
-
-# 00, 01, 10, 11
-#
-#
-#
-
-
-# node = { "1":[], "0":[] }
-# sub_node = { "value": "1010001" }
-
-
-# node["1"].append(sub_node)
-
-
-# node["1"]["0"]["1"]["0"][]
-
-
-a={"x":4,"y":5,"z":9}
 
 
