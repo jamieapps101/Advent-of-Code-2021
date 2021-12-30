@@ -95,6 +95,8 @@ def read_data(data_path: str):
     return random_numbers,boards
 
 def play_all_games(random_numbers,boards):
+    completed_boards = []
+    completing_numbers = []
     for r in random_numbers:
         for board_index in range(len(boards)):
             # if boards[board_index].mark_if_value_present(r):
@@ -102,14 +104,23 @@ def play_all_games(random_numbers,boards):
             #         return board_index
             # if 0==1 and 6==6 (6==6 will never be evaluated as 1==0 is false and the "and" is shortcutting)
             if boards[board_index].mark_if_value_present(r) and boards[board_index].check_board_complete():
-                return r,board_index
+                if board_index not in completed_boards:
+                    completed_boards.append(board_index)
+                    completing_numbers.append(r)
+    return completed_boards,completing_numbers
 
 
 def main():
-    print("solve me")
     random_numbers,boards = read_data("./day_4/data/input.txt")
-    number,winning_board_index = play_all_games(random_numbers,boards)
-    winning_score = boards[winning_board_index].find_score(number)
+    completed_boards,completing_numbers = play_all_games(random_numbers,boards)
+
+    final_board = completed_boards[-1]
+    number = completing_numbers[-1]
+
+    print(f"final_board: {final_board}")
+
+    winning_score = boards[final_board].find_score(number)
+
     print(f"winning_score: {winning_score}")
 
 
