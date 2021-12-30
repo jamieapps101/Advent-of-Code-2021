@@ -16,6 +16,9 @@ class Tile:
     def get_value(self) -> int:
         return self.value
 
+    def __format__(self, format):
+        return f"{self.value}_{self.marked}"
+
 class Board:
     def __init__(self,values):
         self.tiles = []
@@ -67,7 +70,12 @@ class Board:
             for tile in row:
                 if not tile.is_marked():
                     unmarked_tile_sum += tile.get_value()
+                    print(f"{tile.get_value()} is marked")
         return unmarked_tile_sum*called_number
+
+    def print_me(self):
+        for row in self.tiles:
+            print([f"{t.value}_{t.marked}" for t in row])
 
 def read_data(data_path: str):
     # first need to read random numbers
@@ -103,10 +111,9 @@ def play_all_games(random_numbers,boards):
             #     if boards[board_index].check_board_complete():
             #         return board_index
             # if 0==1 and 6==6 (6==6 will never be evaluated as 1==0 is false and the "and" is shortcutting)
-            if boards[board_index].mark_if_value_present(r) and boards[board_index].check_board_complete():
-                if board_index not in completed_boards:
-                    completed_boards.append(board_index)
-                    completing_numbers.append(r)
+            if board_index not in completed_boards and boards[board_index].mark_if_value_present(r) and boards[board_index].check_board_complete():
+                completed_boards.append(board_index)
+                completing_numbers.append(r)
     return completed_boards,completing_numbers
 
 
@@ -118,6 +125,9 @@ def main():
     number = completing_numbers[-1]
 
     print(f"final_board: {final_board}")
+    print(f"number:      {number}")
+
+    print(boards[final_board].print_me())
 
     winning_score = boards[final_board].find_score(number)
 
