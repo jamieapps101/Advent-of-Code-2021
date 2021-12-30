@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
 
-
-
 class Tile:
     def __init__(self,value):
         self.value = value
@@ -14,6 +12,9 @@ class Tile:
 
     def is_marked(self) -> bool:
         return self.marked
+
+    def get_value(self) -> int:
+        return self.value
 
 class Board:
     def __init__(self,values):
@@ -60,30 +61,13 @@ class Board:
                 return True # return true if 5 tiles in this column are marked
         return False # return false if no cols and rows are found
 
-
-def test_board():
-    board_data = [
-        [13,65,84,25,51],
-        [ 4, 9,14,93,51],
-        [52,50, 6,34,55],
-        [70,64,78,65,95],
-        [12,22,41,60,71]
-    ]
-    board = Board(board_data)
-    assert(not board.check_board_complete())
-
-    random_data = [ 4, 9,14,93,51]
-    for r in random_data:
-        board.mark_if_value_present(r)
-    assert(board.check_board_complete())
-
-    board = Board(board_data)
-    random_data = [ 65, 9,50,64,22]
-    for c in random_data:
-        board.mark_if_value_present(c)
-    assert(board.check_board_complete())
-
-    print("All working")
+    def find_score(self, called_number) -> int:
+        unmarked_tile_sum = 0
+        for row in self.tiles:
+            for tile in row:
+                if not tile.is_marked():
+                    unmarked_tile_sum += tile.get_value()
+        return unmarked_tile_sum*called_number
 
 def read_data(data_path: str):
     # first need to read random numbers
@@ -92,20 +76,41 @@ def read_data(data_path: str):
     boards = []
     # list of instances of the class Board
     with open(data_path) as fp:
+        data_buffer = []
         for line_index,line in enumerate(fp):
             if line_index == 0:
                 # this is the random numbers
                 random_numbers = [int(n) for n in line.split(",")]
             else:
                 # probably a board
-                pass
+                if line!="\n":
+                    data_buffer.append([int(n) for n in line.split()])
+                    if len(data_buffer) == 5:
+                        new_board = Board(data_buffer)
+                        boards.append(new_board)
+                        data_buffer = []
+
+    print(f"Read in {len(random_numbers)} numbers and {len(boards)} boards")
 
     return random_numbers,boards
+
+def play_all_games(random_numbers,boards):
+    for r in random_numbers:
+        for board_index in range(len(boards)):
+            # if boards[board_index].mark_if_value_present(r):
+            #     if boards[board_index].check_board_complete():
+            #         return board_index
+            # if 0==1 and 6==6 (6==6 will never be evaluated as 1==0 is false and the "and" is shortcutting)
+            if boards[board_index].mark_if_value_present(r) and boards[board_index].check_board_complete():
+                return r,board_index
 
 
 def main():
     print("solve me")
-    test_board()
+    random_numbers,boards = read_data("./day_4/data/input.txt")
+    number,winning_board_index = play_all_games(random_numbers,boards)
+    winning_score = boards[winning_board_index].find_score(number)
+    print(f"winning_score: {winning_score}")
 
 
 
