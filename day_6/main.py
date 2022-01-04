@@ -40,10 +40,11 @@ class School:
     def time_passes(self,days:int):
         day_target = days + self.day_counter
         while self.day_counter < day_target:
+            print(f"day: {self.day_counter}")
             new_children = self.school_age_up()
             self.baby_lanternfish(new_children)
             self.day_counter += 1
-        
+
 def get_data(file_path: str):
     input_data = []
     with open(file_path) as fp:
