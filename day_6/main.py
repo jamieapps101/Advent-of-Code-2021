@@ -10,12 +10,32 @@ class Lanternfish:
         self.reset_value = reset_value
 
     def lanternfish_age(self):
+        print(f"Internal Timer: {self.internal_timer}")
         if self.internal_timer == 0:
             self.internal_timer = self.reset_value
             return True
         else:
             self.internal_timer -= 1
             return False
+
+def poke_lanternfish():
+    lanternfish = Lanternfish(8,6)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == True and lanternfish.internal_timer == 6)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == False)
+    assert(lanternfish.lanternfish_age() == True)
 
 class School:
     def __init__(self,existing_fish_age:List[int]):
@@ -40,7 +60,7 @@ class School:
     def time_passes(self,days:int):
         day_target = days + self.day_counter
         while self.day_counter < day_target:
-            print(f"day: {self.day_counter}")
+            print(f"day: {self.day_counter}, fish: {self.school_register()}")
             new_children = self.school_age_up()
             self.baby_lanternfish(new_children)
             self.day_counter += 1
@@ -53,11 +73,13 @@ def get_data(file_path: str):
     return input_data
 
 def main():
-    data = get_data(FILE_PATH)
-    lanternfish_school = School(data)
-    lanternfish_school.time_passes(80)
+    # data = get_data(FILE_PATH)
+    # lanternfish_school = School(data)
+    # lanternfish_school.time_passes(80)
 
-    print(f"School Register: {lanternfish_school.school_register()}")
+    # print(f"School Register: {lanternfish_school.school_register()}")
+
+    poke_lanternfish()
 
 if __name__=="__main__":
     main()
