@@ -1,13 +1,14 @@
 #! /usr/bin/env python3
 
-from typing import List
+from typing import List,Tuple
 
 FILE_PATH = "day_6/data/input.txt"
 
 class Lanternfish:
-    def __init__(self,internal_timer:int,reset_value:int):
+    def __init__(self,internal_timer:int,reset_value:int,replicas:int):
         self.internal_timer = internal_timer
         self.reset_value = reset_value
+        self.replicas = replicas
 
     def lanternfish_age(self):
         if self.internal_timer == 0:
@@ -18,7 +19,7 @@ class Lanternfish:
             return False
 
 class School:
-    def __init__(self,existing_fish_age:List[int]):
+    def __init__(self,existing_fish_age:List[Tuple[int,int]]):
         self.day_counter = 0
         self.lanternfish_list = [Lanternfish(age,6) for age in existing_fish_age]
 
@@ -53,9 +54,10 @@ def get_data(file_path: str):
     return input_data
 
 def main():
-    data = get_data(FILE_PATH)
+    # data = get_data(FILE_PATH)
+    data = [3,4,3,1,2]
     lanternfish_school = School(data)
-    lanternfish_school.time_passes(80)
+    lanternfish_school.time_passes(256)
 
     print(f"School Register: {lanternfish_school.school_register()}")
 
