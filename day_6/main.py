@@ -10,32 +10,12 @@ class Lanternfish:
         self.reset_value = reset_value
 
     def lanternfish_age(self):
-        print(f"Internal Timer: {self.internal_timer}")
         if self.internal_timer == 0:
             self.internal_timer = self.reset_value
             return True
         else:
             self.internal_timer -= 1
             return False
-
-def poke_lanternfish():
-    lanternfish = Lanternfish(8,6)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == True and lanternfish.internal_timer == 6)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == False)
-    assert(lanternfish.lanternfish_age() == True)
 
 class School:
     def __init__(self,existing_fish_age:List[int]):
@@ -52,7 +32,7 @@ class School:
 
     def baby_lanternfish(self,child_counter:int):
         for new_babies in range(child_counter):
-            self.lanternfish_list.append(Lanternfish(0,8))
+            self.lanternfish_list.append(Lanternfish(8,6))
 
     def school_register(self) -> int:
         return len(self.lanternfish_list)
@@ -73,13 +53,11 @@ def get_data(file_path: str):
     return input_data
 
 def main():
-    # data = get_data(FILE_PATH)
-    # lanternfish_school = School(data)
-    # lanternfish_school.time_passes(80)
+    data = get_data(FILE_PATH)
+    lanternfish_school = School(data)
+    lanternfish_school.time_passes(80)
 
-    # print(f"School Register: {lanternfish_school.school_register()}")
-
-    poke_lanternfish()
+    print(f"School Register: {lanternfish_school.school_register()}")
 
 if __name__=="__main__":
     main()
