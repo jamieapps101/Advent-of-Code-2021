@@ -61,9 +61,19 @@ class Vector:
                 points.append(Point(self.p0.x,y))
         else:
             # aka this is a diagonal
+            # print("aka this is a diagonal")
             m = (self.p1.y-self.p0.y)/(self.p1.x-self.p0.x)
             c = self.p0.y - m*self.p0.x
-            raise NotImplemented
+
+            start = self.p0.x
+            stop  = self.p1.x
+            step  = 1 if start<=stop else -1
+            stop += step
+
+            for x in range(start,stop,step):
+                y = m*x+c
+                points.append(Point(int(x),int(y)))
+
         return points
 
     def __format__(self, __format_spec: str) -> str:
@@ -117,11 +127,11 @@ def read_data(file_path: str) -> List[Vector]:
 
 def main():
     vectors = read_data(FILE_PATH)
-    filtered_vectors = [v for v in vectors if v.is_vertical() or v.is_horizontal()]
-    map_size = get_max_point(filtered_vectors)
+    # filtered_vectors = [v for v in vectors if v.is_vertical() or v.is_horizontal()]
+    map_size = get_max_point(vectors)
     print(f"map_size: {map_size}")
     map = Map(map_size)
-    for v in filtered_vectors:
+    for v in vectors:
         v_points = v.get_points()
         for p in v_points:
             map.add_to_point(p)
