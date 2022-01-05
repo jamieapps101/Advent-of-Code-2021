@@ -46,12 +46,12 @@ def get_solution(data: List[int], precision: int = 10) -> Tuple[int,int]:
             a = b
             # c = c
         b = mean(a,c)
-        print(f"cost={fuel_cost(data,b)}")
-    return (b,fuel_cost(data,b))
+        print(f"cost={fuel_cost(data,int(b))}")
+    return (b,fuel_cost(data,int(b)))
 
 def main():
     data = get_data(FILE_PATH)
-    solution = get_solution(data,precision=10)
+    solution = get_solution(data,precision=15)
     print(f"solution is {int(solution[0])} with cost {int(solution[1])}")
 
 if __name__=="__main__":
