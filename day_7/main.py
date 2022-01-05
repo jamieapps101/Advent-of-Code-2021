@@ -38,7 +38,7 @@ def get_solution(data: List[int], precision: int = 10) -> Tuple[int,int]:
     c = min(data)
     b = mean(a,c)
     for i in range(precision):
-        print(f"a = {a}, c = {c}")
+        print(f"{i}) a={a}, c={c} - ",end="")
         candidate_a = mean(a,b)
         candidate_a_cost = fuel_cost(data,candidate_a)
         candidate_b = mean(b,c)
@@ -50,7 +50,7 @@ def get_solution(data: List[int], precision: int = 10) -> Tuple[int,int]:
             a = b
             c = c
         b = mean(a,c)
-        print(f"cost: {fuel_cost(data,b)}\n")
+        print(f"cost={fuel_cost(data,b)}")
     return (b,fuel_cost(data,b))
 
 def main():
@@ -61,6 +61,7 @@ def main():
     minimum_current_position = min_current_position(data)
     print(f"Minimum Current Position: {minimum_current_position}")
     solution = get_solution(data,precision=20)
+
     print(f"solution is {int(solution[0])} with cost {int(solution[1])}")
 
 if __name__=="__main__":
