@@ -19,15 +19,23 @@ def max_current_position(positions: List[int]):
 def min_current_position(positions: List[int]):
     return min(positions)
 
+def fuel_calculator(trip_distance:int):
+    cumulative_fuel_cost = 0
+    for x in range(trip_distance):
+        cumulative_fuel_cost = 1 + x + cumulative_fuel_cost
+        # print(f"Fuel Calculator: {x}")
+        # print(f"CFC: {cumulative_fuel_cost}")
+    return cumulative_fuel_cost
+        
 def fuel_cost(current_positions: List[int], proposed_position: int):
-    absolute_difference = 0
+    trip_cost = 0
     for position in current_positions:
         if position >= proposed_position:
-            absolute_difference += position - proposed_position
+            trip_cost += fuel_calculator(position - proposed_position)
         else:
-            absolute_difference += proposed_position - position
-    print(f"Absolute Difference: {absolute_difference}")
-    return absolute_difference
+            trip_cost += fuel_calculator(proposed_position - position)
+    print(f"Absolute Difference: {trip_cost}")
+    return trip_cost
     # get absolute difference between 'proposed' position and actual position of each item in the list
     # sum absolute differences up
 
