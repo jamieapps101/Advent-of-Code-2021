@@ -76,7 +76,7 @@ def main():
     # data = [(3,2),(4,1),(1,1),(2,1)]
     school = School(data)
     # school.census()
-    school.time_passes(80)
+    school.time_passes(256)
 
     print(f"School Register: {school.school_register()}")
 
