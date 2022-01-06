@@ -11,17 +11,15 @@ FILE_PATH = "day_8/data/input.txt"
 # We need to identify how many times these numbers appear in the output.
 
 def get_data(file_path: str):
-    input_data = []
     unique_signal_patterns = []
     four_digit_output_values = []
     with open(file_path) as fp:
         for line in fp:
             # use rstrip to remove white space on right side of string
             # which removes the \n character
-            split_line = input_data.extend([l.rstrip() for l in line.split(" | ")])
-
-    unique_signal_patterns = input_data[0].split()
-    four_digit_output_values = input_data[1].split()
+            split_line = [l.rstrip() for l in line.split(" | ")]
+            unique_signal_patterns.append(split_line[0].split())
+            four_digit_output_values.append(split_line[1].split())
     print(f"FDOV: {four_digit_output_values}")
     return four_digit_output_values
 
@@ -31,10 +29,10 @@ def segment_counter(four_digit_output_values: List[List[str]]):
     sevens = 0
     eights = 0
     for line in four_digit_output_values:
-        print(line[0])
-        print(line[1])
-        print(line[2])
-        print(line[3])
+        # print(line[0])
+        # print(line[1])
+        # print(line[2])
+        # print(line[3])
         if len(line[0])== 2:
             ones += 1
         elif len(line[0])== 4:
@@ -43,7 +41,7 @@ def segment_counter(four_digit_output_values: List[List[str]]):
             sevens += 1
         elif len(line[0])== 7:
             eights += 1
-        elif len(line[1])== 2:
+        if len(line[1])== 2:
             ones += 1
         elif len(line[1])== 4:
             fours += 1
@@ -51,7 +49,7 @@ def segment_counter(four_digit_output_values: List[List[str]]):
             sevens += 1
         elif len(line[1])== 7:
             eights += 1
-        elif len(line[2])== 2:
+        if len(line[2])== 2:
             ones += 1
         elif len(line[2])== 4:
             fours += 1
@@ -59,7 +57,7 @@ def segment_counter(four_digit_output_values: List[List[str]]):
             sevens += 1
         elif len(line[2])== 7:
             eights += 1
-        elif len(line[3])== 2:
+        if len(line[3])== 2:
             ones += 1
         elif len(line[3])== 4:
             fours += 1
@@ -79,7 +77,7 @@ def segment_counter(four_digit_output_values: List[List[str]]):
 def main():
     data = get_data(FILE_PATH)
     print(f"Data: {data}")
-    # segment_counter(data)
+    segment_counter(data)
 
 if __name__=="__main__":
     main()
