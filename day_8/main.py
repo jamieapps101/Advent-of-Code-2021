@@ -29,44 +29,16 @@ def segment_counter(four_digit_output_values: List[List[str]]):
     sevens = 0
     eights = 0
     for line in four_digit_output_values:
-        # print(line[0])
-        # print(line[1])
-        # print(line[2])
-        # print(line[3])
-        if len(line[0])== 2:
-            ones += 1
-        elif len(line[0])== 4:
-            fours += 1
-        elif len(line[0])== 3:
-            sevens += 1
-        elif len(line[0])== 7:
-            eights += 1
-        if len(line[1])== 2:
-            ones += 1
-        elif len(line[1])== 4:
-            fours += 1
-        elif len(line[1])== 3:
-            sevens += 1
-        elif len(line[1])== 7:
-            eights += 1
-        if len(line[2])== 2:
-            ones += 1
-        elif len(line[2])== 4:
-            fours += 1
-        elif len(line[2])== 3:
-            sevens += 1
-        elif len(line[2])== 7:
-            eights += 1
-        if len(line[3])== 2:
-            ones += 1
-        elif len(line[3])== 4:
-            fours += 1
-        elif len(line[3])== 3:
-            sevens += 1
-        elif len(line[3])== 7:
-            eights += 1
-        else:
-            pass
+        for word in line:
+            if   len(word)== 2:
+                ones += 1
+            elif len(word)== 4:
+                fours += 1
+            elif len(word)== 3:
+                sevens += 1
+            elif len(word)== 7:
+                eights += 1
+
     print(f"Number of ones: {ones}")
     print(f"Number of fours: {fours}")
     print(f"Number of sevens: {sevens}")
