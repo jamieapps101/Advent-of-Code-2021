@@ -16,12 +16,11 @@ def get_data(file_path: str):
         for line in fp:
             input_data = [l.rstrip() for l in line.split(" | ")]
             # unique_signal_patterns = input_data[0].split()
-            # four_digit_output_values = input_data[1].split()
+            four_digit_output_values = input_data[1].split()
             # print(f"Unique Signal Patterns: {unique_signal_patterns}")
-            # print(f"Output Values: {four_digit_output_values}")
-    four_digit_output_values = input_data[1].split()
-    print(four_digit_output_values)
+            print(f"Output Values: {four_digit_output_values}")
     return four_digit_output_values
+    # four_digit_output_values = input_data[1].split()
 
 def segment_counter(four_digit_output_values: List[List[str]]):
     ones = 0
