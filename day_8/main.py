@@ -14,6 +14,8 @@ def get_data(file_path: str):
     input_data = []
     with open(file_path) as fp:
         for line in fp:
+            # use rstrip to remove white space on right side of string
+            # which removes the \n character
             input_data = [l.rstrip() for l in line.split(" | ")]
             # unique_signal_patterns = input_data[0].split()
             four_digit_output_values = input_data[1].split()
