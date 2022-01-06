@@ -12,17 +12,18 @@ FILE_PATH = "day_8/data/input.txt"
 
 def get_data(file_path: str):
     input_data = []
+    unique_signal_patterns = []
+    four_digit_output_values = []
     with open(file_path) as fp:
         for line in fp:
             # use rstrip to remove white space on right side of string
             # which removes the \n character
-            input_data = [l.rstrip() for l in line.split(" | ")]
-            # unique_signal_patterns = input_data[0].split()
-            four_digit_output_values = input_data[1].split()
-            # print(f"Unique Signal Patterns: {unique_signal_patterns}")
-            print(f"Output Values: {four_digit_output_values}")
+            split_line = input_data.extend([l.rstrip() for l in line.split(" | ")])
+
+    unique_signal_patterns = input_data[0].split()
+    four_digit_output_values = input_data[1].split()
+    print(f"FDOV: {four_digit_output_values}")
     return four_digit_output_values
-    # four_digit_output_values = input_data[1].split()
 
 def segment_counter(four_digit_output_values: List[List[str]]):
     ones = 0
@@ -77,7 +78,8 @@ def segment_counter(four_digit_output_values: List[List[str]]):
 
 def main():
     data = get_data(FILE_PATH)
-    segment_counter(data)
+    print(f"Data: {data}")
+    # segment_counter(data)
 
 if __name__=="__main__":
     main()
