@@ -3,15 +3,27 @@
 FILE_PATH = "day_9/data/input.txt"
 
 def get_data(file_path: str):
-    input_data = []
+    digit_data = []
+    line_data = []
     with open(file_path) as fp:
         for line in fp:
-            input_data.append(line[:-1])
+            digit = int(line)
+            digit_data.append(digit)
+            # print(digit_data)
+            line_data.append(line[:-1])
+            # print(line_data)
+            # line_data = line_data.append(digit_data)
+    print(f"Digit Data = {digit_data}")
+    print(f"Line Data = {line_data}")
+    input_data = line_data.append(digit_data)
     print(f"Input Data = {input_data}")
-    return input_data
+    return input_data, line_data, digit_data
 
 def main():
     data = get_data(FILE_PATH)
 
 if __name__ == "__main__":
     main()
+
+
+# so I would go through each line, convert it to a list of ints. then append that list into the input_data list
