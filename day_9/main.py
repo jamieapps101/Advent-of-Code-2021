@@ -32,13 +32,10 @@ def access_element(line_data: List):
     print(f"Length of X Dimension: {max_x_dimension}")
     print(f"Length of Y Dimension: {max_y_dimension}")
     for row_index in range(max_y_dimension):
-        column = []
         for column_index in range(max_x_dimension):
-            # target = row_index[column_index]
-            # column.append(target)
-            item = line_data[row_index][column_index]
-            return item
-    # print(column)
+            element = line_data[row_index][column_index]
+    print(f"Element: {element}")
+    # return element
 
 
 # for each column index
