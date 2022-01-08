@@ -11,7 +11,7 @@ def get_data(file_path: str):
             for digit in line:
                 number = int(digit)
                 digit_data.append(number)
-            line_data.append(line)
+            # line_data.append(line)
     # print(f"Digit Data = {digit_data}")
     # print(f"Line Data = {line_data}")
     line_data.append(digit_data)
