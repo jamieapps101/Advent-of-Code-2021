@@ -7,12 +7,11 @@ def get_data(file_path: str):
     line_data = []
     with open(file_path) as fp:
         for line in fp:
-            digit = int(line)
-            digit_data.append(digit)
-            # print(digit_data)
-            line_data.append(line[:-1])
-            # print(line_data)
-            # line_data = line_data.append(digit_data)
+            line = line.rstrip()
+            for digit in line:
+                number = int(digit)
+                digit_data.append(number)
+            line_data.append(line)
     # print(f"Digit Data = {digit_data}")
     # print(f"Line Data = {line_data}")
     line_data.append(digit_data)
