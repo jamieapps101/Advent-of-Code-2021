@@ -31,12 +31,14 @@ def access_element(line_data: List):
     max_y_dimension = (len(line_data))
     print(f"Length of X Dimension: {max_x_dimension}")
     print(f"Length of Y Dimension: {max_y_dimension}")
-    for column_index in range(max_y_dimension):
+    for row_index in range(max_y_dimension):
         column = []
-        for row_index in range(max_x_dimension):
-            target = row_index[column_index]
-            column.append(target)
-    print(column)
+        for column_index in range(max_x_dimension):
+            # target = row_index[column_index]
+            # column.append(target)
+            item = line_data[row_index][column_index]
+            return item
+    # print(column)
 
 
 # for each column index
@@ -55,7 +57,7 @@ def access_element(line_data: List):
 #         epsilon_rate += "1" if ones<zeroes else "0"
 #     # once we've built up the binary strings, convert them into actual
 #     # integer numbers
-    
+
 
 
 
