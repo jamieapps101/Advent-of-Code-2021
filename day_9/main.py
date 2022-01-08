@@ -13,11 +13,11 @@ def get_data(file_path: str):
             line_data.append(line[:-1])
             # print(line_data)
             # line_data = line_data.append(digit_data)
-    print(f"Digit Data = {digit_data}")
-    print(f"Line Data = {line_data}")
-    input_data = line_data.append(digit_data)
-    print(f"Input Data = {input_data}")
-    return input_data, line_data, digit_data
+    # print(f"Digit Data = {digit_data}")
+    # print(f"Line Data = {line_data}")
+    line_data.append(digit_data)
+    print(f"Input Data = {line_data}")
+    return line_data, digit_data
 
 def main():
     data = get_data(FILE_PATH)
