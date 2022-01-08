@@ -34,35 +34,16 @@ def access_element(line_data: List):
     for row_index in range(max_y_dimension):
         for column_index in range(max_x_dimension):
             element = line_data[row_index][column_index]
-    print(f"Element: {element}")
-    # return element
-
-
-# for each column index
-#     for column_index in range(number_of_columns):
-#         # visits each string in input_data, and gets the character
-#         # at the index of column_index
-#         column = []
-#         for row in input_data:
-#             x = row[column_index]
-#             column.append(x)
-#         # count number of 1s and 0s in string
-#         ones = column.count("1")
-#         zeroes = column.count("0")
-#         # Build up string representation of binary number for each column
-#         gamma_rate   += "1" if ones>zeroes else "0"
-#         epsilon_rate += "1" if ones<zeroes else "0"
-#     # once we've built up the binary strings, convert them into actual
-#     # integer numbers
-
-
-
-
-
-
-# 2. Two nested for loops, one iterating from 0 to xmax, second iterating from 0 to ymax.
-# 3. Use double slicing syntax to access a particular element in the square (see example)
+            # print(f"Element: {element}")
+            print(f"Column Index: {column_index}")
+            print(f"Row Index: {row_index}")
+            edge_case_count = 0
+            if row_index == 0 or max_x_dimension and column_index == 0 or max_x_dimension:
+                edge_case_count += 1
+            print(f"Edge Case Count: {edge_case_count}")
+    
 # 4. Build model that works on standard digits e.g. all 4 dimensions (doing edge cases later)
+# 5. Within nested for loops, we will need two sections of code: first, detect if we are at an edge case (if statement) and will skip this iteration of the for loops if so. Second, will detect the local minimum value.
 
 def main():
     data = get_data(FILE_PATH)
