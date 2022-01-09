@@ -26,11 +26,11 @@ def get_data(file_path: str):
 #     print(f"Length of Y Dimension: {max_y_dimension}")
 #     return max_x_dimension, max_y_dimension
 
-def access_element(line_data: List):
+def check_element(line_data: List):
     max_x_dimension = (len(line_data[0]))
     max_y_dimension = (len(line_data))
-    print(f"Length of X Dimension: {max_x_dimension}")
-    print(f"Length of Y Dimension: {max_y_dimension}")
+    # print(f"Length of X Dimension: {max_x_dimension}")
+    # print(f"Length of Y Dimension: {max_y_dimension}")
     # edge_case_count = 0
     risk_level = 0
     for row_index in range(max_y_dimension):
@@ -49,9 +49,40 @@ def access_element(line_data: List):
             # print(f"Below: {look_below}")
             # print(f"Left: {look_left}")
             # print(f"Right: {look_right}")
-            if look_above < element and look_below < element and look_left < element and look_right < element:
+            if look_above > element and look_below > element and look_left > element and look_right > element:
                 risk_level += element + 1
-                print(f"Risk Level = {risk_level}")
+            # edges
+            if row_index == 0 and (column_index != 0 or column_index != max_y_dimension-1):
+                if look_below > element and look_left > element and look_right > element:
+                    risk_level += element + 1
+                    print("Top Line Edge Case Found")
+            if row_index == max_x_dimension-1 and (column_index != 0 or column_index != max_y_dimension-1):
+                if look_above > element and look_left > element and look_right > element:
+                    risk_level += element + 1
+                    print("Bottom Line Edge Case Found")
+            if column_index == 0 and (row_index != 0 or row_index != max_x_dimension-1):
+                if look_above > element and look_below > element and look_right > element:
+                    risk_level += element + 1
+                    print("Left Side Edge Case Found")
+            if column_index == max_y_dimension-1 and (row_index != 0 or row_index != max_x_dimension-1):
+                if look_above > element and look_below > element and look_left > element:
+                    risk_level += element + 1
+                    print("Right Side Edge Case Found")
+            # corners
+            if row_index == 0 and column_index == 0: 
+                if look_below > element and look_right > element:
+                    risk_level += element + 1
+            if row_index == 0 and column_index == max_y_dimension-1:
+                if look_below > element and look_left > element:
+                    risk_level += element + 1
+            if row_index == max_x_dimension-1 and column_index == 0:
+                if look_above > element and look_right > element:
+                    risk_level += element + 1
+                    print("Corner Edge Case Found")
+            if row_index == max_x_dimension-1 and column_index == max_y_dimension-1:
+                if look_above > element and look_left > element:
+                    risk_level += element + 1
+    print(f"Risk Level: {risk_level}")
             
 
 
@@ -63,7 +94,7 @@ def access_element(line_data: List):
 
 def main():
     data = get_data(FILE_PATH)
-    access_element(data)
+    check_element(data)
 
 if __name__ == "__main__":
     main()
