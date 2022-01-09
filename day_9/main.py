@@ -37,56 +37,91 @@ def check_element(line_data: List):
         for column_index in range(max_x_dimension):
             element = line_data[row_index][column_index]
             # print(f"Element: {element}")
-            if row_index == 0 or row_index == max_x_dimension-1 or column_index == 0 or column_index == max_y_dimension-1:
-                continue
-            look_above = line_data[row_index-1][column_index]
-            look_below = line_data[row_index+1][column_index]
-            look_left = line_data[row_index][column_index-1]
-            look_right = line_data[row_index][column_index+1]
+            # if row_index == 0 or row_index == max_x_dimension-1 or column_index == 0 or column_index == max_y_dimension-1:
+            #     continue
+
+            # look_below = line_data[row_index+1][column_index]
+            # look_above = line_data[row_index-1][column_index]
+            # look_left = line_data[row_index][column_index-1]
+            # look_right = line_data[row_index][column_index+1]
+
             # print(f"Column Index: {column_index}")
             # print(f"Row Index: {row_index}")
             # print(f"Above: {look_above}")
             # print(f"Below: {look_below}")
             # print(f"Left: {look_left}")
             # print(f"Right: {look_right}")
-            if look_above > element and look_below > element and look_left > element and look_right > element:
-                risk_level += element + 1
+            # if look_above > element and look_below > element and look_left > element and look_right > element:
+            #     risk_level += element + 1
             # edges
-            if row_index == 0 and (column_index != 0 or column_index != max_y_dimension-1):
+
+            if row_index == 0 and (column_index != 0 and column_index != max_y_dimension-1):
+            # if row_index == 0 and (column_index != 0 or column_index != max_y_dimension-1):
+            # if row_index == 0 and not (column_index == 0 or column_index == max_y_dimension-1):
+                look_below = line_data[row_index+1][column_index]
+                look_left = line_data[row_index][column_index-1]
+                look_right = line_data[row_index][column_index+1]
                 if look_below > element and look_left > element and look_right > element:
                     risk_level += element + 1
                     print("Top Line Edge Case Found")
-            if row_index == max_x_dimension-1 and (column_index != 0 or column_index != max_y_dimension-1):
+
+            elif row_index == max_x_dimension-1 and (column_index != 0 and column_index != max_y_dimension-1):
+                look_above = line_data[row_index-1][column_index]
+                look_left = line_data[row_index][column_index-1]
+                look_right = line_data[row_index][column_index+1]
                 if look_above > element and look_left > element and look_right > element:
                     risk_level += element + 1
                     print("Bottom Line Edge Case Found")
-            if column_index == 0 and (row_index != 0 or row_index != max_x_dimension-1):
+
+            elif column_index == 0 and (row_index != 0 and row_index != max_x_dimension-1):
+                look_below = line_data[row_index+1][column_index]
+                look_above = line_data[row_index-1][column_index]
+                look_right = line_data[row_index][column_index+1]
                 if look_above > element and look_below > element and look_right > element:
                     risk_level += element + 1
                     print("Left Side Edge Case Found")
-            if column_index == max_y_dimension-1 and (row_index != 0 or row_index != max_x_dimension-1):
+            elif column_index == max_y_dimension-1 and (row_index != 0 and row_index != max_x_dimension-1):
+                look_below = line_data[row_index+1][column_index]
+                look_above = line_data[row_index-1][column_index]
+                look_left = line_data[row_index][column_index-1]
                 if look_above > element and look_below > element and look_left > element:
                     risk_level += element + 1
                     print("Right Side Edge Case Found")
             # corners
-            if row_index == 0 and column_index == 0: 
+            elif row_index == 0 and column_index == 0:
+                look_below = line_data[row_index+1][column_index]
+                look_right = line_data[row_index][column_index+1]
                 if look_below > element and look_right > element:
                     risk_level += element + 1
-            if row_index == 0 and column_index == max_y_dimension-1:
+            elif row_index == 0 and column_index == max_y_dimension-1:
+                look_below = line_data[row_index+1][column_index]
+                look_left = line_data[row_index][column_index-1]
                 if look_below > element and look_left > element:
                     risk_level += element + 1
-            if row_index == max_x_dimension-1 and column_index == 0:
+            elif row_index == max_x_dimension-1 and column_index == 0:
+                look_right = line_data[row_index][column_index+1]
+                look_above = line_data[row_index-1][column_index]
                 if look_above > element and look_right > element:
                     risk_level += element + 1
                     print("Corner Edge Case Found")
-            if row_index == max_x_dimension-1 and column_index == max_y_dimension-1:
+            elif row_index == max_x_dimension-1 and column_index == max_y_dimension-1:
+                look_left = line_data[row_index][column_index-1]
+                look_above = line_data[row_index-1][column_index]
                 if look_above > element and look_left > element:
                     risk_level += element + 1
+            else:
+                look_below = line_data[row_index+1][column_index]
+                look_above = line_data[row_index-1][column_index]
+                look_left = line_data[row_index][column_index-1]
+                look_right = line_data[row_index][column_index+1]
+                if look_above > element and look_below > element and look_left > element and look_right > element:
+                    risk_level += element + 1
+
     print(f"Risk Level: {risk_level}")
-            
 
 
-    
+
+
 # 5. Within nested for loops, we will need two sections of code: first, detect if we are at an edge case (if statement) and will skip this iteration of the for loops if so. Second, will detect the local minimum value.
 # 6. Inside the second bit, that is what we are using to detect if the current central value is minimum to everything else.
 # (Will look at above, below, left, right values)
