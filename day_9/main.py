@@ -25,6 +25,10 @@ def get_data(file_path: str):
 # if digit = 9 - go to next line (but this would lose basins further to the right in the data??)
 # else current_basin_counter += 1
 
+# Ok, so what about, instead of line 25: if digit < 9, look around at surrounding measurements
+# if the surronding measurement is in a basin, and has been assigned a basin, then assign the current
+# measurement to the same basin. otherwise assign the current measurement to a new basin id?
+
 def main():
     data = get_data(FILE_PATH)
 
