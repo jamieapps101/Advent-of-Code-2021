@@ -2,7 +2,8 @@
 
 from typing import List
 
-FILE_PATH = "day_9/data/input.txt"
+FILE_PATH = "day_9/data/test_input.txt"
+# FILE_PATH = "day_9/data/input.txt"
 
 def get_data(file_path: str):
     line_data = []
@@ -14,12 +15,10 @@ def get_data(file_path: str):
                 number = int(digit)
                 digit_data.append(number)
             line_data.append(digit_data)
-    # print(f"Digit Data = {digit_data}")
-    # print(f"Line Data = {line_data}")
     return line_data
 
 def basin_labeller(line_data: List):
-
+    pass
 # ----------- Day 9 Part 1 Code -----------------------------------------------------
 def check_element(line_data: List):
     max_x_dimension = (len(line_data[0]))
@@ -113,11 +112,90 @@ def check_element(line_data: List):
                     risk_level += element + 1
 
     print(f"Risk Level: {risk_level}")
-# ------------------------------------------------------------------------------- 
+# -------------------------------------------------------------------------------
 
+
+
+'''
+0. read in data into matrix format
+1. create extra dimension to allow labelling
+2. pass over each element
+    2a. if adjacent elements are in basins, copy over basin id
+    2b. if no adjacent elements are in basins, use basin counter value
+    as new id, and increment basin counter
+'''
+
+
+def create_label_dim(depth_data: List[List[int]]) -> List[List[dict]]:
+    '''Replace each integer depth measurement with a dictionary containing
+    the depth, and an optional label value'''
+    for y in range(len(depth_data)):
+        for x in range(len(depth_data[0])):
+            depth = depth_data[y][x]
+            depth_data[y][x] = {
+                "depth": depth,
+                "label": None
+            }
+    return depth_data
+
+def basin_finder(depth_data: List[List[int]]) -> List[List[dict]]:
+    depth_data = create_label_dim(depth_data)
+    basin_counter = 0
+    basin_size_count = []
+
+    for y in range(len(depth_data)):
+        for x in range(len(depth_data[0])):
+            print(f"depth: {depth_data[y][x]['depth']} | ",end="")
+            if depth_data[y][x]["depth"] < 9:
+                # ie we're in a basin
+                # determine if there is an adjacent label, and store
+                # it in adjacent_label if present
+                above = None if y==0 else depth_data[y-1][x]["label"]
+                below = None if y==len(depth_data)-1 else depth_data[y+1][x]["label"]
+                left  = None if x==0 else depth_data[y][x-1]["label"]
+                right = None if x==len(depth_data[0])-1 else depth_data[y][x+1]["label"]
+                adjacent_labels = [above, below, left, right]
+                adjacent_label = None
+                for l in adjacent_labels:
+                    if l is not None:
+                        adjacent_label = l
+                        break
+                print(f"adjacent_label: {adjacent_label} | adjacent_labels: {adjacent_labels}")
+
+                if adjacent_label is None:
+                    # ie there are no other basin measurements nearby,
+                    # so we must be in a new basin
+                    depth_data[y][x]["label"] = basin_counter
+                    basin_size_count.append(1)
+                    basin_counter += 1
+                else:
+                    # there is an adject basin nearby! we'll copy the label that we identified
+                    depth_data[y][x]["label"] = adjacent_label
+                    basin_size_count[adjacent_label] += 1
+            else:
+                # ie we're not in a basin, so do nothing
+                print("")
+                pass
+        print("<new row>")
+
+    return depth_data,basin_size_count
 
 def main():
     data = get_data(FILE_PATH)
+
+    _depth_data,basin_size_count = basin_finder(data)
+
+    sorted(basin_size_count,reverse=True)
+
+    top_three_basin_sizes = basin_size_count[0:3]
+    multiplied_sizes = 1
+    for size in top_three_basin_sizes:
+        multiplied_sizes *= size
+
+    # 98532 - too low
+    print(f"multiplied_sizes: {multiplied_sizes}")
+
+
 
 if __name__ == "__main__":
     main()
