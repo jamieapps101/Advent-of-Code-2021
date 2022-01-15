@@ -110,14 +110,14 @@ impl Node {
         return mut_box_ref.as_mut();
     }
 
-    // fn get_child_ref<B: Into<BranchSelector>>(&self, branch: B) -> Option<&Self> {
-    //     let branch_index: usize = branch.into().into();
-    //     if self.branches[branch_index].child.is_none() {
-    //         return None
-    //     }
-    //     let mut_box_ref = self.branches[branch_index].child.as_ref().unwrap();
-    //     Some(mut_box_ref.as_ref())
-    // }
+    fn get_child_ref<B: Into<BranchSelector>>(&self, branch: B) -> Option<&Self> {
+        let branch_index: usize = branch.into().into();
+        if self.branches[branch_index].child.is_none() {
+            return None
+        }
+        let mut_box_ref = self.branches[branch_index].child.as_ref().unwrap();
+        Some(mut_box_ref.as_ref())
+    }
 }
 
 fn build_tree(data: Vec<[u8;MAX_LINE_LEN]>) -> Node {
@@ -150,8 +150,10 @@ fn query_tree(tree: &Node, mode:QueryMode, depth: usize) -> Vec<u8> {
         },
     };
     let mut return_vec = vec![this_bit];
-    if depth == MAX_LINE_LEN-1 {
-        return_vec.extend(query_tree(tree, mode, depth));
+    if depth != MAX_LINE_LEN-1 {
+        println!("{depth}: {this_bit}:{},{}",tree.get_count(0usize),tree.get_count(1usize));
+        let sub_tree = tree.get_child_ref(this_bit).unwrap();
+        return_vec.extend(query_tree(sub_tree, mode, depth+1));
     }
     return return_vec;
 }
@@ -187,10 +189,13 @@ fn main() {
 
     let og_rating_str = get_oxy_gen_rating(&tree);
     println!("og_rating_str: {og_rating_str:?}");
+    println!("");
     let og_rating = binary_vec_to_int(og_rating_str);
+
 
     let cs_rating_str = get_co2_scr_rating(&tree);
     println!("cs_rating_str: {cs_rating_str:?}");
+    println!("");
     let cs_rating = binary_vec_to_int(cs_rating_str);
 
     let life_support_rating = og_rating * cs_rating;
