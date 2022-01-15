@@ -19,6 +19,12 @@ def get_data(file_path: str):
     # print(f"Input Data = {line_data}")
     return line_data
 
+# need a number of basins counter (to track total number)
+# also need to count the number of digits within each basin
+# for digit in line
+# if digit = 9 - go to next line (but this would lose basins further to the right in the data??)
+# else current_basin_counter += 1
+
 def main():
     data = get_data(FILE_PATH)
 
