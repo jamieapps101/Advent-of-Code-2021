@@ -155,15 +155,12 @@ impl Octopi {
 }
 
 fn main() {
-    println!("Hello, world!");
     let mut octopi = Octopi::load_from(DATA_PATH);
-
     let mut total_flashes = 0;
     for _i in 0..SIM_STEPS {
         let flashers = octopi.step_once();
         total_flashes += flashers.len();
     }
-
     println!("total_flashes: {total_flashes}");
 }
 
