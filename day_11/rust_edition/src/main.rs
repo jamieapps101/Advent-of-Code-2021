@@ -4,14 +4,13 @@ use std::{
     fs::File
 };
 
-
 const DATA_PATH: &str    = "../data/input.txt";
 const DATA_WIDTH: usize  = 10;
 const DATA_HEIGHT: usize = 10;
 const FLASH_THRESH: u8   = 9;
 const SIM_STEPS: usize   = 100;
 
-
+/// helper function to read in data into nested arrays
 fn read_file<P: AsRef<Path>>(path: P) -> [[Octopus; DATA_WIDTH]; DATA_HEIGHT] {
     let mut output = [[Octopus::default(); DATA_WIDTH]; DATA_HEIGHT];
 
@@ -19,18 +18,20 @@ fn read_file<P: AsRef<Path>>(path: P) -> [[Octopus; DATA_WIDTH]; DATA_HEIGHT] {
     let mut reader = BufReader::new(f);
 
     let mut line_string = String::with_capacity(DATA_WIDTH);
-    let line_index = 0;
+    let mut line_index = 0;
     while let Ok(byte_count) = reader.read_line(&mut line_string) {
         if byte_count == 0 { break }
         for (char_index,c) in line_string.chars().enumerate() {
             if c == '\n' { continue }
             output[line_index][char_index].set_level(c.to_digit(10).unwrap() as u8);
         }
+        line_string.clear();
+        line_index+=1;
     }
     output
 }
 
-#[derive(Clone,Copy)]
+#[derive(Clone,Copy,Debug, PartialEq)]
 struct Octopus {
     level: u8,
 }
@@ -47,7 +48,7 @@ impl Default for Octopus {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq,Debug)]
 enum FlashState { Flash, NonFlash }
 
 impl Octopus {
@@ -69,7 +70,7 @@ impl Octopus {
     }
 }
 
-
+#[derive(Debug, PartialEq)]
 struct Octopi {
     octopi: [[Octopus; DATA_WIDTH]; DATA_HEIGHT],
 }
@@ -83,12 +84,11 @@ impl Octopi {
 
     fn step_once(&mut self) -> Vec<(usize,usize)> {
         // first add one to each octopus in the grid
-        for row in self.octopi {
-            for mut octopus in row {
-                octopus.increment_level();
+        for row_index in 0..self.octopi.len() {
+            for col_index in 0..self.octopi[0].len() {
+                self.octopi[row_index][col_index].increment_level();
             }
         }
-
         // work out which ones do a flash
         let mut flashers = Vec::new();
         let mut current_flashers = self.initiate_flash();
@@ -112,7 +112,8 @@ impl Octopi {
                 }
             }
         }
-
+        let n = flashers.len();
+        println!("n: {n}");
         flashers.iter().for_each( |(r,c)| {
             let row_index = *r;
             let col_index = *c;
@@ -141,7 +142,78 @@ fn main() {
     println!("Hello, world!");
     let mut octopi = Octopi::load_from(DATA_PATH);
 
+    let mut total_flashes = 0;
     for _i in 0..SIM_STEPS {
-        let _flashers = octopi.step_once();
+        let flashers = octopi.step_once();
+        total_flashes += flashers.len();
+    }
+
+    println!("total_flashes: {total_flashes}");
+}
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    fn get_ref_data() -> [[Octopus; 10]; 10] {
+        [
+            [4.into(),4.into(),3.into(),8.into(),6.into(),2.into(),4.into(),2.into(),6.into(),2.into()],
+            [6.into(),2.into(),6.into(),3.into(),2.into(),5.into(),1.into(),8.into(),6.into(),4.into()],
+            [2.into(),6.into(),1.into(),8.into(),8.into(),1.into(),2.into(),4.into(),3.into(),4.into()],
+            [2.into(),1.into(),3.into(),4.into(),2.into(),6.into(),4.into(),5.into(),6.into(),5.into()],
+            [1.into(),8.into(),1.into(),5.into(),1.into(),3.into(),1.into(),2.into(),4.into(),7.into()],
+            [2.into(),6.into(),1.into(),2.into(),4.into(),5.into(),7.into(),3.into(),2.into(),5.into()],
+            [8.into(),5.into(),8.into(),5.into(),7.into(),6.into(),7.into(),5.into(),8.into(),4.into()],
+            [7.into(),2.into(),1.into(),7.into(),1.into(),3.into(),4.into(),5.into(),5.into(),6.into()],
+            [2.into(),8.into(),2.into(),5.into(),4.into(),5.into(),6.into(),5.into(),6.into(),3.into()],
+            [8.into(),2.into(),4.into(),8.into(),4.into(),7.into(),3.into(),5.into(),8.into(),4.into()]
+        ]
+    }
+    #[test]
+    fn test_read_file() {
+        let data = read_file(DATA_PATH);
+        let ref_data = get_ref_data();
+        for row_index in 0..data.len() {
+            assert_eq!(
+                data[row_index],
+                ref_data[row_index]
+            );
+        }
+    }
+
+
+    #[test]
+    fn create_octopi() {
+        let octopi = Octopi::load_from(DATA_PATH);
+        let ref_octopi = Octopi {octopi: get_ref_data()};
+        assert_eq!(octopi, ref_octopi);
+    }
+
+    #[test]
+    fn test_octopus_leveling() {
+        let mut octopus = Octopus::default();
+        assert_eq!(octopus.level,0);
+
+        octopus.increment_level();
+        assert_eq!(octopus.level,1);
+
+        assert_eq!(octopus.flash(3), FlashState::NonFlash);
+
+        octopus.increment_level();
+        assert_eq!(octopus.level,2);
+
+        assert_eq!(octopus.flash(3), FlashState::NonFlash);
+
+        octopus.increment_level();
+        assert_eq!(octopus.level,3);
+
+        assert_eq!(octopus.flash(3), FlashState::Flash);
+        assert_eq!(octopus.level,0);
+
+        assert_eq!(octopus.flash(3), FlashState::NonFlash);
+
+        octopus.increment_level();
+        assert_eq!(octopus.level,1);
     }
 }
