@@ -234,30 +234,39 @@ mod test {
 
     #[test]
     fn test_stepping() {
-        let init_data_path = "./test_data/data_00.txt";
+        let init_data_path = "./test_data/data_000.txt";
         let mut octopi = Octopi::load_from(init_data_path);
 
         let mut flasher_count = 0;
         flasher_count += octopi.step_once().len();
         assert_eq!(flasher_count,0);
-        let ref_data_path = "./test_data/data_01.txt";
+        let ref_data_path = "./test_data/data_001.txt";
         let ref_octopi = Octopi::load_from(ref_data_path);
         assert_eq!(octopi,ref_octopi);
 
         flasher_count += octopi.step_once().len();
-        let ref_data_path = "./test_data/data_02.txt";
+        let ref_data_path = "./test_data/data_002.txt";
         let ref_octopi = Octopi::load_from(ref_data_path);
         assert_eq!(octopi,ref_octopi);
         assert_eq!(flasher_count,35);
 
-        println!("{:?}\n",octopi);
         for _i in 0..8 {
             let flashers = octopi.step_once();
             flasher_count += flashers.len();
         }
 
         assert_eq!(flasher_count,204);
-        let ref_data_path = "./test_data/data_10.txt";
+        let ref_data_path = "./test_data/data_010.txt";
+        let ref_octopi = Octopi::load_from(ref_data_path);
+        assert_eq!(octopi,ref_octopi);
+
+        for _i in 0..90 {
+            let flashers = octopi.step_once();
+            flasher_count += flashers.len();
+        }
+
+        assert_eq!(flasher_count,1656);
+        let ref_data_path = "./test_data/data_100.txt";
         let ref_octopi = Octopi::load_from(ref_data_path);
         assert_eq!(octopi,ref_octopi);
 
