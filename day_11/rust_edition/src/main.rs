@@ -61,7 +61,7 @@ impl Octopus {
     }
 
     fn flash(&mut self, threshold: u8) -> FlashState {
-        if self.level >= threshold {
+        if self.level > threshold {
             self.level = 0;
             FlashState::Flash
         } else {
@@ -70,9 +70,22 @@ impl Octopus {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 struct Octopi {
     octopi: [[Octopus; DATA_WIDTH]; DATA_HEIGHT],
+}
+
+impl std::fmt::Debug for Octopi {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f,"\n")?;
+        for row_index in 0..self.octopi.len() {
+            for col_index in 0..self.octopi[0].len() {
+                write!(f,"{}",self.octopi[row_index][col_index].level)?;
+            }
+            write!(f,"\n")?;
+        }
+        Ok(())
+    }
 }
 
 
@@ -96,6 +109,11 @@ impl Octopi {
             flashers.append(&mut current_flashers);
             current_flashers = self.initiate_flash();
         }
+
+        // any that flashed, reset to 0
+        flashers.iter().for_each(|(row_i,col_i)|{
+            self.octopi[*row_i][*col_i].set_level(0);
+        });
         flashers
     }
 
@@ -112,14 +130,12 @@ impl Octopi {
                 }
             }
         }
-        let n = flashers.len();
-        println!("n: {n}");
         flashers.iter().for_each( |(r,c)| {
             let row_index = *r;
             let col_index = *c;
             for row_offset in [-1,0,1] {
                 for col_offset in [-1,0,1] {
-                    if col_offset == 0 || row_offset == 0 {
+                    if col_offset == 0 && row_offset == 0 {
                         continue;
                     }
                     if (row_index == 0 && row_offset == -1) ||
@@ -182,7 +198,6 @@ mod test {
         }
     }
 
-
     #[test]
     fn create_octopi() {
         let octopi = Octopi::load_from(DATA_PATH);
@@ -208,12 +223,43 @@ mod test {
         octopus.increment_level();
         assert_eq!(octopus.level,3);
 
-        assert_eq!(octopus.flash(3), FlashState::Flash);
+        assert_eq!(octopus.flash(2), FlashState::Flash);
         assert_eq!(octopus.level,0);
 
-        assert_eq!(octopus.flash(3), FlashState::NonFlash);
+        assert_eq!(octopus.flash(2), FlashState::NonFlash);
 
         octopus.increment_level();
         assert_eq!(octopus.level,1);
+    }
+
+    #[test]
+    fn test_stepping() {
+        let init_data_path = "./test_data/data_00.txt";
+        let mut octopi = Octopi::load_from(init_data_path);
+
+        let mut flasher_count = 0;
+        flasher_count += octopi.step_once().len();
+        assert_eq!(flasher_count,0);
+        let ref_data_path = "./test_data/data_01.txt";
+        let ref_octopi = Octopi::load_from(ref_data_path);
+        assert_eq!(octopi,ref_octopi);
+
+        flasher_count += octopi.step_once().len();
+        let ref_data_path = "./test_data/data_02.txt";
+        let ref_octopi = Octopi::load_from(ref_data_path);
+        assert_eq!(octopi,ref_octopi);
+        assert_eq!(flasher_count,35);
+
+        println!("{:?}\n",octopi);
+        for _i in 0..8 {
+            let flashers = octopi.step_once();
+            flasher_count += flashers.len();
+        }
+
+        assert_eq!(flasher_count,204);
+        let ref_data_path = "./test_data/data_10.txt";
+        let ref_octopi = Octopi::load_from(ref_data_path);
+        assert_eq!(octopi,ref_octopi);
+
     }
 }
